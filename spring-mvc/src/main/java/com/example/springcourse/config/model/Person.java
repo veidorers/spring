@@ -1,9 +1,6 @@
 package com.example.springcourse.config.model;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 public class Person {
     private int id;
@@ -17,14 +14,20 @@ public class Person {
     @Email(message = "Email is not well-formed")
     private String email;
 
+    //Country, City, Index (6 digits)
+    //Russia, Moscow, 123456
+    @Pattern(regexp = "[A-Z]\\w+, [A-Z]\\w+, \\d{6}", message = "Your adress should be in format: Country, City, Postal Code (6 digits)")
+    private String address;
+
     public Person() {
     }
 
-    public Person(int id, int age, String name, String email) {
+    public Person(int id, int age, String name, String email, String address) {
         this.id = id;
         this.age = age;
         this.name = name;
         this.email = email;
+        this.address = address;
     }
 
     public int getId() {
@@ -57,5 +60,13 @@ public class Person {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
