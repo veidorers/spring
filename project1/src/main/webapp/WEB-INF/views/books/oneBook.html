@@ -8,9 +8,28 @@
 <br/>
 <a href="/books">All books</a>
 <br/>
-<div th:text="${book.getAuthor()} + ' - ' + ${book.getName()}"></div>
-<div th:text="${book.getYear()}"></div>
-<div th:text="${book.getId()}"></div>
+<div th:text="${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}"></div>
+
+<br/>
+
+<div th:if="${person} != null" th:text="'The book is now with: ' + ${person.getFio()}"></div>
+<form th:if="${person} != null" th:method="PATCH" th:action="@{/books/{id}/return(id = ${book.getId()})}">
+    <input type="submit" value="Return the book"/>
+</form>
+
+<div th:if="${person} == null">Book is free. Whom to assign this book?</div>
+<form th:method="PATCH" th:action="@{/books/{id}/reserve(id = ${book.getId()})}" th:if="${person} == null" th:object="${book}">
+    <select th:object="${book}" th:field="*{personId}">
+        <option th:each="personToChoose : ${people}" th:value="${personToChoose.getId()}" th:text="${personToChoose.getFio()}"></option>
+    </select>
+    <input type="hidden" th:field="*{name}"/>
+    <input type="hidden" th:field="*{author}"/>
+    <input type="hidden" th:field="*{year}"/>
+    <input type="submit" value="Choose"/>
+</form>
+
+<br/>
+<hr/>
 
 <a th:href="@{/books/{id}/edit(id = ${book.getId()})}">
     <button>Edit</button>

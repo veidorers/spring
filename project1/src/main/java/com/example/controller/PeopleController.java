@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.dao.BookDao;
 import com.example.dao.PersonDao;
 import com.example.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/people")
 public class PeopleController {
     private final PersonDao personDao;
+    private final BookDao bookDao;
 
     @Autowired
-    public PeopleController(PersonDao personDao) {
+    public PeopleController(PersonDao personDao, BookDao bookDao) {
         this.personDao = personDao;
+        this.bookDao = bookDao;
     }
 
     @GetMapping
@@ -26,6 +29,7 @@ public class PeopleController {
     @GetMapping("/{id}")
     public String getPersonById(@PathVariable("id") int id, Model model) {
         model.addAttribute("person", personDao.getById(id));
+        model.addAttribute("books", bookDao.getBooksByPersonId(id));
         return "people/onePerson";
     }
 

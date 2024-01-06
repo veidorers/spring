@@ -9,12 +9,12 @@
 <br/>
 
 <form th:method="POST" th:action="@{/people}" th:object="${person}">
-    <label for="fio">Enter your fio:</label>
+    <label for="fio">Enter a fio:</label>
     <input id="fio" type="text" th:field="*{fio}"/>
 
     <br/>
 
-    <label for="birthYear">Enter your birth year:</label>
+    <label for="birthYear">Enter a birth year:</label>
     <input id="birthYear" type="number" th:field="*{birthYear}"/>
 
     <br/>
