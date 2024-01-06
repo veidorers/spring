@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add admin</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/admin/add}" th:object="${person}">
+  <select th:object="${person}" th:field="*{id}">
+    <option th:each="person: ${people}" th:value="${person.getId()}" th:text="${person.getName()}"></option>
+  </select>
+
+  <input type="submit" value="Add">
+</form>
+</body>
+</html>
