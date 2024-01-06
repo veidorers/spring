@@ -1,10 +1,20 @@
 package com.example.model;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class Book {
     private Integer id;
+    @NotEmpty(message = "Name must not be null")
+    @Size(min = 1, max = 200, message = "Name size must be from 1 to 200 symbols")
     private String name;
+    @NotEmpty(message = "Author name must not be empty")
+    @Size(min = 3, max = 300, message = "Author name must be from 3 to 300 symbols")
     private String author;
-    private int year;
+    @NotNull(message = "Year must not be null")
+    private Integer year;
     private Integer personId;
 
     public Book() {
@@ -42,11 +52,11 @@ public class Book {
         this.author = author;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 

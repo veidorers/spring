@@ -1,9 +1,16 @@
 package com.example.model;
 
+import jakarta.validation.constraints.*;
+
 public class Person {
     private Integer id;
+    @Pattern(regexp = "[A-Z]\\w+ [A-Z]\\w+ [A-Z]\\w+", message = "Fio must be in format: Surname Name Middle-name")
+    @NotEmpty(message = "Fio must not be empty")
+    @Size(min = 5, max = 300, message = "Fio size must be from 5 to 300 symbols")
     private String fio;
-    private int birthYear;
+    @NotNull(message = "Birth year must not be empty")
+    @Min(value = 1900, message = "Birth year must be greater than or equal to 1900")
+    private Integer birthYear;
 
     public Person() {
     }
@@ -30,11 +37,11 @@ public class Person {
         this.fio = fio;
     }
 
-    public int getBirthYear() {
+    public Integer getBirthYear() {
         return birthYear;
     }
 
-    public void setBirthYear(int birthYear) {
+    public void setBirthYear(Integer birthYear) {
         this.birthYear = birthYear;
     }
 }

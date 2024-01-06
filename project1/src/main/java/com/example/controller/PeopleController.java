@@ -3,9 +3,12 @@ package com.example.controller;
 import com.example.dao.BookDao;
 import com.example.dao.PersonDao;
 import com.example.model.Person;
+import com.example.util.PersonValidator;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -13,11 +16,13 @@ import org.springframework.web.bind.annotation.*;
 public class PeopleController {
     private final PersonDao personDao;
     private final BookDao bookDao;
+    private final PersonValidator personValidator;
 
     @Autowired
-    public PeopleController(PersonDao personDao, BookDao bookDao) {
+    public PeopleController(PersonDao personDao, BookDao bookDao, PersonValidator personValidator) {
         this.personDao = personDao;
         this.bookDao = bookDao;
+        this.personValidator = personValidator;
     }
 
     @GetMapping
@@ -39,7 +44,13 @@ public class PeopleController {
     }
 
     @PostMapping
-    public String add(@ModelAttribute("person") Person person) {
+    public String add(@ModelAttribute("person") @Valid Person person,
+                      BindingResult bindingResult) {
+        personValidator.validate(person, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return "people/createPersonPage";
+        }
+
         personDao.save(person);
         return "redirect:/people";
     }
@@ -51,7 +62,12 @@ public class PeopleController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("person") Person person) {
+    public String update(@ModelAttribute("person") @Valid Person person,
+                         BindingResult bindingResult) {
+        personValidator.validate(person, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return "people/editPersonPage";
+        }
         personDao.update(person);
         return "redirect:/people/" + person.getId();
     }

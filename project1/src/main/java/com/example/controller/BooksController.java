@@ -3,10 +3,12 @@ package com.example.controller;
 import com.example.dao.BookDao;
 import com.example.dao.PersonDao;
 import com.example.model.Book;
-import com.example.model.Person;
+import com.example.util.util.BookValidator;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -14,11 +16,13 @@ import org.springframework.web.bind.annotation.*;
 public class BooksController {
     private final BookDao bookDao;
     private final PersonDao personDao;
+    private final BookValidator bookValidator;
 
     @Autowired
-    public BooksController(BookDao bookDao, PersonDao personDao) {
+    public BooksController(BookDao bookDao, PersonDao personDao, BookValidator bookValidator) {
         this.bookDao = bookDao;
         this.personDao = personDao;
+        this.bookValidator = bookValidator;
     }
 
     @GetMapping
@@ -46,7 +50,12 @@ public class BooksController {
     }
 
     @PostMapping
-    public String add(@ModelAttribute("book") Book book) {
+    public String add(@ModelAttribute("book") @Valid Book book,
+                      BindingResult bindingResult) {
+        bookValidator.validate(book, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return "books/createBookPage";
+        }
         bookDao.save(book);
         return "redirect:/books";
     }
@@ -58,7 +67,12 @@ public class BooksController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("book") Book book) {
+    public String update(@ModelAttribute("book") @Valid Book book,
+                         BindingResult bindingResult) {
+        bookValidator.validate(book, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return "books/editBookPage";
+        }
         bookDao.update(book);
         return "redirect:/books/" + book.getId();
     }

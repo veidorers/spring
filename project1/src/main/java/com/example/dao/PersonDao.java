@@ -40,4 +40,9 @@ public class PersonDao {
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM Person WHERE id = ?", id);
     }
+
+    public Person getByFio(String fio) {
+        return jdbcTemplate.query("SELECT * FROM Person WHERE fio = ?", new BeanPropertyRowMapper<>(Person.class), fio)
+                .stream().findAny().orElse(null);
+    }
 }
