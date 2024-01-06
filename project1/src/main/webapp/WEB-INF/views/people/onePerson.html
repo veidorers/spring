@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Person</title>
+</head>
+<body>
+<br/>
+<a href="/people">All people</a>
+<br/>
+<div th:text="${person.getFio()} + ', ' + ${person.getBirthYear()}"></div>
+<div th:text="${person.getId()}"></div>
+
+<br/>
+<hr/>
+<a type="button" th:href="@{/people/{id}/edit(id = ${person.getId()})}">
+    <button>Edit</button>
+</a>
+<form th:method="DELETE" th:action="@{/people/{id}(id = ${person.getId()})}">
+    <input type="submit" value="Delete">
+</form>
+</body>
+</html>
