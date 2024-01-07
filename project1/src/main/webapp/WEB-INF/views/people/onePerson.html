@@ -17,13 +17,13 @@
 
 <div th:if="${books.isEmpty()}">Person didn't take any book</div>
 <div th:unless="${books.isEmpty()}">
-    Books:
+    <hr/>
+    <b>Books:</b>
     <div th:each="book : ${books}">
         <a th:href="@{/books/{id}(id=${book.getId()})}" th:text="${book.getName()} + ', ' + ${book.getYear()}"></a>
     </div>
 </div>
 
-<br/>
 <hr/>
 
 <a type="button" th:href="@{/people/{id}/edit(id = ${person.getId()})}">

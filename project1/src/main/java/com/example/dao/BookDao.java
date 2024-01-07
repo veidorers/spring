@@ -52,8 +52,6 @@ public class BookDao {
     }
 
     public void reserve(Book book) {
-        var bookFromDB = getById(book.getId());
-        bookFromDB.setPersonId(book.getPersonId());
-        update(bookFromDB);
+        jdbcTemplate.update("UPDATE Book SET person_id = ? WHERE id = ?", book.getPersonId(), book.getId());
     }
 }

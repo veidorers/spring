@@ -38,9 +38,8 @@ public class BooksController {
         if(book.getPersonId() != null) {
             model.addAttribute("person", personDao.getById(book.getPersonId()));
         } else {
-            model.addAttribute("person", null);
+            model.addAttribute("people", personDao.getAllPeople());
         }
-        model.addAttribute("people", personDao.getAllPeople());
         return "books/oneBook";
     }
 
@@ -92,7 +91,7 @@ public class BooksController {
 
     @PatchMapping("/{id}/reserve")
     public String reserveBook(@ModelAttribute("book") Book book) {
-        bookDao.update(book);
+        bookDao.reserve(book);
         return "redirect:/books";
     }
 }
